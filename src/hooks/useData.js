@@ -10,7 +10,7 @@ export const useData = (request) => {
         )
       })
       .catch((res) => console.log(res, 'res'))
-  }, [])
+  }, []) // eslint-disable-line
 
   return data
 }

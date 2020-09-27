@@ -17,6 +17,7 @@ const HomePage = () => {
     error: undefined,
     searchCount: 0,
     searchFinished: false,
+    searchPhrase: undefined,
   })
 
   React.useEffect(() => {
@@ -39,6 +40,7 @@ const HomePage = () => {
       setD((x) => ({
         ...x,
         data: x.data.concat(R.pathOr([], ['data', 'Search'], res)),
+        resultCount: res.data.totalResults,
       }))
     })
   }, [d.page, d.searchCount]) // eslint-disable-line
@@ -51,6 +53,7 @@ const HomePage = () => {
       error: undefined,
       searchCount: prev.searchCount + 1,
       searchFinished: false,
+      searchPhrase: prev.title,
     }))
 
   React.useEffect(() => {
@@ -94,7 +97,11 @@ const HomePage = () => {
 
       {d.data.length > 0 ? (
         <>
-          <div>Results for "{d.title}"</div>
+          {
+            <div>
+              {d.resultCount} Results for "{d.searchPhrase}"
+            </div>
+          }
           <div>
             <List style={{ display: 'flex', flexDirection: 'column' }}>
               {d.data.map((movie) => (
@@ -109,7 +116,7 @@ const HomePage = () => {
           <StyledLink to="/favorites">Favorites</StyledLink>
         </div>
       )}
-      {d.searchFinished && <h2>End of results</h2>}
+      {d.searchFinished && d.data.length !== 0 && <h2>End of results</h2>}
     </div>
   )
 }
